@@ -186,8 +186,21 @@ function determineAssetRefType(source, data) {
   const mimeValidation = source.validations.find(val => val.linkMimetypeGroup) || {}
   const mimeGroups = mimeValidation.linkMimetypeGroup || []
 
-  if (mimeGroups.includes('image') || ['image', 'picture'].includes(source.id)) {
-    return {type: 'image'}
+  if (mimeGroups.length) {
+    if (mimeGroups.includes('image') || ['image', 'picture'].includes(source.id)) {
+      return { type: 'image' }
+    }
+  } else {
+    // Check entries for values for this asset
+    const entry = data.entries.find((item) => {
+      return Object.keys(item.fields).includes(source.id)
+    })
+
+    // Check assets for what that value is
+    const field = entry.fields[source.id]
+    const ids = Object.values(field).map(item => item.sys.id)
+    const assets = ids.map(id => data.assets.find((e) => e.sys.id === id))
+    console.log(assets.map(a => Object.values(a.fields.file)))
   }
 
   // @todo file/image?

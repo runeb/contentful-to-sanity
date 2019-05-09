@@ -1,13 +1,20 @@
 {
   "env": {
     "browser": false,
-    "node": true
+    "node": true,
+    "mocha": true
   },
+  "plugins": [
+    "mocha"
+  ],
   "extends": [
     "sanity",
     "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": 2017
+  },
+  "rules": {
+    "mocha/no-exclusive-tests": "error"
   }
 }
